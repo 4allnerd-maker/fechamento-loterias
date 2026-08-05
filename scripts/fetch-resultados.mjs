@@ -17,6 +17,8 @@ const PAUSA_MS = 150; // intervalo entre chamadas à API para não sobrecarregá
 const JOGOS = [
   { nome: 'lotofacil', apiPath: 'lotofacil', digits: 2 },
   { nome: 'lotomania', apiPath: 'lotomania', digits: 2 },
+  { nome: 'megasena', apiPath: 'megasena', digits: 2 },
+  { nome: 'quina', apiPath: 'quina', digits: 2 },
 ];
 
 function esperar(ms) {

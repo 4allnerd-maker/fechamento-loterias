@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fechamento Mega-Sena — Quadrantes & Padrões</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0C1F16;
+    --bg-elev: #122B1F;
+    --bg-elev-2: #17392A;
+    --border: #204934;
+    --text: #EAFBF0;
+    --text-muted: #93C2A6;
+    --gold: #3DDC84;
+    --rose: #EF5C79;
+    --teal: #3DDC84;
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 15% 0%, #163826 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height:100vh;
+    padding: 28px 16px 60px;
+  }
+  .app{max-width: 900px; margin: 0 auto;}
+  header.top{margin-bottom: 22px;}
+  h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size: clamp(24px, 4vw, 32px);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  h1 .accent{color: var(--gold);}
+  .subtitle{color: var(--text-muted); font-size: 14.5px; margin:0 0 14px; max-width: 640px; line-height:1.5;}
+  .disclaimer{
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--rose);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height:1.5;
+  }
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    margin: 22px 0 18px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 5px;
+  }
+  nav.tabs button{
+    flex:1;
+    background:transparent;
+    border:none;
+    color: var(--text-muted);
+    font-family:'Fredoka', sans-serif;
+    font-weight:500;
+    font-size:14px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  nav.tabs button.active{
+    background: var(--bg-elev-2);
+    color: var(--text);
+    box-shadow: 0 0 0 1px var(--border);
+  }
+  nav.tabs button:hover:not(.active){color:var(--text);}
+
+  section.panel{display:none;}
+  section.panel.active{display:block; animation: fade .2s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card h2{
+    font-family:'Fredoka', sans-serif;
+    font-size:17px;
+    font-weight:600;
+    margin: 0 0 4px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h2 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:22px; height:22px; border-radius:50%;
+    background: var(--gold); color:#07240F;
+    font-size:12px; font-weight:700;
+  }
+  .card p.hint{color:var(--text-muted); font-size:13px; margin:0 0 14px; line-height:1.5;}
+
+  textarea{
+    width:100%;
+    min-height:120px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    padding: 12px;
+    resize: vertical;
+  }
+  textarea:focus, input:focus{outline: 2px solid var(--gold); outline-offset:1px;}
+
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px;}
+  button.btn{
+    background: var(--gold);
+    color: #07240F;
+    border:none;
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    padding: 10px 16px;
+    border-radius: 9px;
+    cursor:pointer;
+    transition: filter .15s ease;
+  }
+  button.btn:hover{filter:brightness(1.08);}
+  button.btn.secondary{
+    background: var(--bg-elev-2);
+    color: var(--text);
+    border:1px solid var(--border);
+  }
+  button.btn.ghost{
+    background:transparent;
+    color: var(--text-muted);
+    border:1px solid var(--border);
+  }
+  button.btn:disabled{opacity:.45; cursor:not-allowed;}
+  .status{font-size:13px; color: var(--teal); font-weight:600;}
+  .status.warn{color: var(--rose);}
+
+  .board{
+    display:grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 6px;
+    max-width: 480px;
+    margin: 4px auto 0;
+  }
+  .ball{
+    aspect-ratio: 1/1;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    cursor:default;
+    user-select:none;
+    transition: all .12s ease;
+  }
+  .board.pick .ball{cursor:pointer;}
+  .board.pick .ball:hover{transform: scale(1.08); border-color: var(--gold);}
+  .ball.fixed{background: var(--gold); color:#07240F; border-color: var(--gold);}
+  .ball.excluded{background: var(--rose); color:#2a0a10; border-color: var(--rose);}
+
+  .legend{display:flex; gap:16px; justify-content:center; margin-top:14px; font-size:12.5px; color:var(--text-muted); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:10px; height:10px; border-radius:50%; display:inline-block;}
+
+  .stats-grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-top:14px;}
+  .stat-box{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:12px;}
+  .stat-box .label{font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px;}
+  .stat-box .value{font-family:'Fredoka', sans-serif; font-size:19px; font-weight:600;}
+  .pairs-list{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .pair-chip{
+    background: var(--bg); border:1px solid var(--border); border-radius: 8px;
+    padding: 5px 10px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-muted);
+  }
+  .pair-chip b{color:var(--text); font-weight:600;}
+
+  .pool-info{
+    display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-size:13px;
+  }
+  .pool-info .pill{
+    background: var(--bg); border:1px solid var(--border); border-radius:20px;
+    padding: 6px 12px; color:var(--text-muted);
+  }
+  .pool-info .pill b{color:var(--text);}
+
+  label.field{display:block; font-size:13px; color:var(--text-muted); margin-top:16px; margin-bottom:6px;}
+  input[type=range]{width:100%;}
+  input[type=number]{
+    background: var(--bg); border:1px solid var(--border); border-radius:8px;
+    color:var(--text); padding:8px 10px; font-family:'Inter'; font-size:13px; width:120px;
+  }
+  select{
+    background: var(--bg); border:1px solid var(--border); border-radius:8px;
+    color:var(--text); padding:8px 10px; font-family:'Inter'; font-size:13px;
+  }
+
+  table.jogos{width:100%; border-collapse:collapse; margin-top:14px; font-size:12.5px;}
+  table.jogos th, table.jogos td{padding:8px 10px; border-bottom:1px solid var(--border); text-align:left;}
+  table.jogos th{color:var(--text-muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.03em;}
+  table.jogos td.nums{font-family:'JetBrains Mono', monospace; letter-spacing:.01em;}
+  .jogos-wrap{max-height: 420px; overflow-y:auto; border-radius:10px;}
+
+  footer{margin-top: 26px; text-align:center; font-size:12px; color: var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <a href="../" style="display:inline-block; color: var(--text-muted); text-decoration:none; font-size: 13px; margin-bottom: 14px;">← voltar para a página inicial</a>
+    <h1>Fechamento <span class="accent">Mega-Sena</span></h1>
+    <p class="subtitle">Analise padrões do histórico e monte fechamentos otimizados a partir dos números que você escolher. Cada jogo (aposta simples) da Mega-Sena tem 6 números, dentre os 60 disponíveis (01 a 60).</p>
+    <div class="disclaimer">Os sorteios da Mega-Sena são aleatórios e independentes — nenhum padrão histórico garante ou prevê o próximo resultado. Esta ferramenta serve para organizar estratégia e cobertura de jogos, não para prever números.</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="historico">1 · Histórico</button>
+    <button class="tab-btn" data-tab="padroes">2 · Quadrantes &amp; Padrões</button>
+    <button class="tab-btn" data-tab="fechamento">3 · Fechamento</button>
+  </nav>
+
+  <!-- TAB 1: HISTÓRICO -->
+  <section class="panel active" id="tab-historico">
+    <div class="card">
+      <h2><span class="num">1</span> Cole os resultados anteriores</h2>
+      <p class="hint">Um sorteio por linha, com as 6 dezenas separadas por espaço ou vírgula (01 a 60). Você pode copiar direto de uma planilha ou do site oficial da Caixa.<br>Ex: <code>03 16 24 30 49 54</code><br><br>Se preferir, coloque o número do concurso antes de cada linha (formato <code>concurso: números</code>) — a ferramenta identifica e ordena automaticamente do mais antigo para o mais novo, então a ordem em que você cola deixa de importar.<br>Ex: <code>2870: 05 12 18 27 41 56</code></p>
+      <textarea id="inputHistorico" placeholder="Cole aqui um sorteio por linha..."></textarea>
+      <div class="row">
+        <button class="btn" id="btnAdicionar">Adicionar ao histórico</button>
+        <button class="btn secondary" id="btnLimpar">Limpar histórico</button>
+        <button class="btn ghost" id="btnExportar">Baixar histórico (JSON)</button>
+        <label class="btn ghost" style="cursor:pointer;">Importar JSON
+          <input type="file" id="inputImportar" accept="application/json" style="display:none;">
+        </label>
+      </div>
+      <div class="row"><span class="status" id="statusHistorico">Nenhum sorteio carregado ainda.</span></div>
+    </div>
+  </section>
+
+  <!-- TAB 2: PADRÕES -->
+  <section class="panel" id="tab-padroes">
+    <div class="card">
+      <h2><span class="num">2</span> Tabuleiro de frequência</h2>
+      <p class="hint">Quanto mais forte a cor, mais vezes o número saiu na janela de análise selecionada abaixo.</p>
+      <label class="field" style="margin-top:0;">Profundidade da análise</label>
+      <select id="profundidade">
+        <option value="10">Últimos 10 sorteios</option>
+        <option value="20">Últimos 20 sorteios</option>
+        <option value="50">Últimos 50 sorteios</option>
+        <option value="100">Últimos 100 sorteios</option>
+        <option value="200">Últimos 200 sorteios</option>
+        <option value="500">Últimos 500 sorteios</option>
+        <option value="all" selected>Todos os sorteios</option>
+      </select>
+      <div class="board" id="statsBoard"></div>
+      <div class="legend">
+        <span><span class="dot" style="background:rgb(34,197,94);"></span> Frio</span>
+        <span><span class="dot" style="background:rgb(250,204,21);"></span> &nbsp;</span>
+        <span><span class="dot" style="background:rgb(249,115,22);"></span> &nbsp;</span>
+        <span><span class="dot" style="background:rgb(239,68,68);"></span> Quente</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">3</span> Estatísticas gerais</h2>
+      <div class="stats-grid" id="statsGrid"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">4</span> Pares mais frequentes</h2>
+      <p class="hint">Números que mais saíram juntos no mesmo sorteio, dentro da janela de análise.</p>
+      <div class="pairs-list" id="pairsList"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">5</span> Sequências e anomalias</h2>
+      <p class="hint">Sequências de 3 ou 4 números consecutivos (ex: 14, 15, 16, 17) que apareceram juntas no mesmo sorteio, dentro da janela de análise, com destaque para as que saíram bem mais que o esperado pelo acaso.</p>
+      <div class="pairs-list" id="anomaliasList"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">6</span> Aposta da casa</h2>
+      <p class="hint">Sugestão de jogo com os 6 números do bilhete, gerada com base no padrão de frequência da janela de análise selecionada acima — funciona como uma "Surpresinha" ponderada: números mais quentes têm mais chance de entrar, mas o sorteio continua aleatório. Não é garantia de resultado.</p>
+      <div class="row">
+        <button class="btn" id="btnApostaCasa">Gerar aposta da casa</button>
+        <button class="btn ghost" id="btnCopiarApostaCasa" disabled>Copiar</button>
+      </div>
+      <div class="board" id="apostaCasaBoard" style="margin-top:16px;"></div>
+      <div class="row" id="apostaCasaInfo" style="justify-content:center;"></div>
+    </div>
+  </section>
+
+  <!-- TAB 3: FECHAMENTO -->
+  <section class="panel" id="tab-fechamento">
+    <div class="card">
+      <h2><span class="num">7</span> Escolha as certezas e exclusões</h2>
+      <p class="hint">Clique em um número: 1º clique = <b style="color:var(--gold)">certeza</b> (vai sair, máx. 2) · 2º clique = <b style="color:var(--rose)">exclusão</b> (não vai sair, máx. 12) · 3º clique = neutro.</p>
+      <div class="row">
+        <button class="btn secondary" id="btnResetFechamento">🔄 Novo fechamento (limpa seleção e resultado — o histórico não é afetado)</button>
+      </div>
+      <div class="board pick" id="pickBoard" style="margin-top:14px;"></div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--gold);"></span> Certeza</span>
+        <span><span class="dot" style="background:var(--rose);"></span> Exclusão</span>
+        <span><span class="dot" style="background:var(--bg); border:1px solid var(--border);"></span> Neutro (miolo)</span>
+      </div>
+      <div class="pool-info" id="poolInfo"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">8</span> Gerar fechamento</h2>
+      <label class="field">Modo de geração</label>
+      <select id="modoFechamento">
+        <option value="cobertura">Cobertura otimizada (recomendado)</option>
+        <option value="fechado">Fechamento fechado (todas as combinações do miolo)</option>
+      </select>
+
+      <div id="controleCobertura">
+        <label class="field">Quantidade de jogos: <b id="numJogosLabel">20</b></label>
+        <input type="range" id="numJogos" min="2" max="300" value="20">
+      </div>
+
+      <label class="field">Valor por jogo (R$) — opcional, para estimar o custo total</label>
+      <input type="number" id="valorJogo" placeholder="ex: 5,00" min="0" step="0.5">
+
+      <div class="row">
+        <button class="btn" id="btnGerar">Gerar fechamento</button>
+        <button class="btn ghost" id="btnCopiar" disabled>Copiar todos os jogos</button>
+        <button class="btn ghost" id="btnCsv" disabled>Baixar CSV</button>
+      </div>
+      <div class="row"><span class="status" id="statusFechamento"></span></div>
+    </div>
+
+    <div class="card" id="cardResultado" style="display:none;">
+      <h2><span class="num">9</span> Extrato dos jogos</h2>
+      <div class="stats-grid" id="resumoFechamento"></div>
+      <div class="jogos-wrap">
+        <table class="jogos">
+          <thead><tr><th style="width:60px;">Jogo</th><th>Números</th></tr></thead>
+          <tbody id="tbodyJogos"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>Ferramenta pessoal de organização de jogos — não é afiliada à Caixa Econômica Federal.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- CONSTANTES DA MEGA-SENA ----------
+  const MIN_NUM = 1;
+  const MAX_NUM = 60;         // números de 01 a 60
+  const DRAW_SIZE = 6;        // dezenas sorteadas por concurso
+  const CARD_SIZE = 6;        // números por jogo/aposta simples
+  const MAX_FIXED = 2;
+  const MAX_EXCLUDED = 12;
+
+  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+
+  // ---------- STATE ----------
+  const state = {
+    historico: [],   // array de {concurso: number|null, numeros: number[6]}
+    fixed: new Set(),
+    excluded: new Set(),
+    jogos: []
+  };
+
+  // ---------- TABS ----------
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+      if(btn.dataset.tab==='padroes') renderStats();
+    });
+  });
+
+  // ---------- HISTÓRICO ----------
+  function sortHistorico(){
+    const comConcurso = state.historico.filter(e=>e.concurso!=null);
+    const semConcurso = state.historico.filter(e=>e.concurso==null);
+    comConcurso.sort((a,b)=>a.concurso-b.concurso);
+    state.historico = comConcurso.concat(semConcurso);
+  }
+
+  function parseHistoricoText(text){
+    const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+    let added = 0, skipped = 0;
+    lines.forEach(line=>{
+      let concurso = null;
+      let numsPart = line;
+      const m = line.match(/^(\d+)\s*[:\-]\s*(.+)$/);
+      if(m){
+        concurso = parseInt(m[1], 10);
+        numsPart = m[2];
+      }
+      const nums = (numsPart.match(/\d+/g)||[]).map(Number).filter(n=>n>=MIN_NUM && n<=MAX_NUM);
+      const uniq = [...new Set(nums)];
+      if(uniq.length !== DRAW_SIZE){ skipped++; return; }
+      uniq.sort((a,b)=>a-b);
+      const sig = uniq.join(',');
+      if(state.historico.some(d=>d.numeros.join(',')===sig)){ skipped++; return; }
+      state.historico.push({concurso, numeros: uniq});
+      added++;
+    });
+    sortHistorico();
+    return {added, skipped};
+  }
+
+  document.getElementById('btnAdicionar').addEventListener('click', ()=>{
+    const text = document.getElementById('inputHistorico').value;
+    const {added, skipped} = parseHistoricoText(text);
+    updateHistoricoStatus(added, skipped);
+    document.getElementById('inputHistorico').value = '';
+  });
+
+  document.getElementById('btnLimpar').addEventListener('click', ()=>{
+    if(state.historico.length && !confirm('Apagar todo o histórico carregado?')) return;
+    state.historico = [];
+    updateHistoricoStatus(0,0,true);
+  });
+
+  document.getElementById('btnExportar').addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify(state.historico)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'historico_megasena.json';
+    a.click();
+  });
+
+  document.getElementById('inputImportar').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!Array.isArray(data)) throw new Error('formato inválido');
+        let added = 0;
+        data.forEach(d=>{
+          let concurso = null, arr = null;
+          if(Array.isArray(d)){
+            arr = d;
+          } else if(d && Array.isArray(d.numeros)){
+            arr = d.numeros;
+            concurso = (typeof d.concurso === 'number') ? d.concurso : null;
+          }
+          if(arr && arr.length===DRAW_SIZE){
+            const uniq = [...new Set(arr.map(Number))].filter(n=>n>=MIN_NUM&&n<=MAX_NUM);
+            if(uniq.length===DRAW_SIZE){
+              uniq.sort((a,b)=>a-b);
+              const sig = uniq.join(',');
+              if(!state.historico.some(x=>x.numeros.join(',')===sig)){
+                state.historico.push({concurso, numeros: uniq}); added++;
+              }
+            }
+          }
+        });
+        sortHistorico();
+        updateHistoricoStatus(added, 0);
+      }catch(err){
+        alert('Não foi possível ler o arquivo: '+err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  function updateHistoricoStatus(added, skipped, cleared){
+    const el = document.getElementById('statusHistorico');
+    if(cleared){
+      el.textContent = 'Histórico limpo.';
+      el.classList.remove('warn');
+    } else {
+      let msg = state.historico.length + ' sorteio(s) no histórico.';
+      if(added) msg += ' (+' + added + ' adicionados)';
+      if(skipped) msg += ' — ' + skipped + ' linha(s) ignorada(s) (formato inválido ou duplicada — cada linha precisa ter exatamente '+DRAW_SIZE+' dezenas).';
+      const comConcurso = state.historico.filter(e=>e.concurso!=null).map(e=>e.concurso);
+      if(comConcurso.length){
+        msg += ' Concursos identificados: ' + Math.min(...comConcurso) + ' a ' + Math.max(...comConcurso) + ' (ordenados automaticamente).';
+      }
+      el.textContent = msg;
+      el.classList.toggle('warn', skipped>0 && added===0);
+    }
+  }
+
+  // ---------- PADRÕES / STATS ----------
+  function getAnalysisWindow(){
+    const sel = document.getElementById('profundidade').value;
+    const entries = sel === 'all' ? state.historico : state.historico.slice(-parseInt(sel,10));
+    return entries.map(e=>e.numeros);
+  }
+
+  function computeFreq(data){
+    const freq = {};
+    for(let n=MIN_NUM;n<=MAX_NUM;n++) freq[n]=0;
+    data.forEach(draw=>draw.forEach(n=>freq[n]++));
+    return freq;
+  }
+
+  function computePairFreq(data){
+    const pf = {};
+    data.forEach(draw=>{
+      for(let i=0;i<draw.length;i++)
+        for(let j=i+1;j<draw.length;j++){
+          const key = draw[i]+'-'+draw[j];
+          pf[key] = (pf[key]||0)+1;
+        }
+    });
+    return pf;
+  }
+
+  document.getElementById('profundidade').addEventListener('change', renderStats);
+
+  function renderStats(){
+    const janela = getAnalysisWindow();
+    const freq = computeFreq(janela);
+    const max = Math.max(1, ...Object.values(freq));
+    const board = document.getElementById('statsBoard');
+    board.innerHTML = '';
+    for(let n=MIN_NUM;n<=MAX_NUM;n++){
+      const div = document.createElement('div');
+      div.className = 'ball';
+      div.textContent = pad(n);
+      const ratio = freq[n]/max;
+      if(janela.length){
+        const bg = heatColor(ratio);
+        div.style.background = bg;
+        div.style.borderColor = bg;
+        div.style.color = textColorFor(bg);
+      }
+      board.appendChild(div);
+    }
+
+    const grid = document.getElementById('statsGrid');
+    grid.innerHTML = '';
+    if(!state.historico.length){
+      grid.innerHTML = '<div class="stat-box"><div class="label">Aviso</div><div class="value" style="font-size:14px;">Adicione o histórico na aba 1 para ver as estatísticas.</div></div>';
+      document.getElementById('pairsList').innerHTML = '';
+      document.getElementById('anomaliasList').innerHTML = '';
+      return;
+    }
+    const entries = Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+    const quentes = entries.slice(0,10).map(e=>pad(+e[0])).join(', ');
+    const frios = entries.slice(-10).map(e=>pad(+e[0])).join(', ');
+    const totalSum = janela.reduce((s,d)=>s+d.reduce((a,b)=>a+b,0),0);
+    const avgSum = (totalSum/janela.length).toFixed(1);
+    const avgEven = (janela.reduce((s,d)=>s+d.filter(n=>n%2===0).length,0)/janela.length).toFixed(1);
+    const avgOdd = (DRAW_SIZE-avgEven).toFixed(1);
+
+    const boxes = [
+      ['Sorteios carregados', state.historico.length],
+      ['Janela de análise', janela.length],
+      ['10 números mais quentes', quentes],
+      ['10 números mais frios', frios],
+      ['Soma média por sorteio', avgSum],
+      ['Média de pares', avgEven],
+      ['Média de ímpares', avgOdd],
+    ];
+    boxes.forEach(([label,value])=>{
+      const box = document.createElement('div');
+      box.className = 'stat-box';
+      box.innerHTML = `<div class="label">${label}</div><div class="value" style="font-size:${String(value).length>10?'13px':'19px'}">${value}</div>`;
+      grid.appendChild(box);
+    });
+
+    const pf = computePairFreq(janela);
+    const topPairs = Object.entries(pf).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    const pairsList = document.getElementById('pairsList');
+    pairsList.innerHTML = '';
+    topPairs.forEach(([key,count])=>{
+      const [a,b] = key.split('-');
+      const chip = document.createElement('div');
+      chip.className = 'pair-chip';
+      chip.innerHTML = `${pad(+a)} · ${pad(+b)} <b>(${count}x)</b>`;
+      pairsList.appendChild(chip);
+    });
+
+    renderAnomalias(janela);
+  }
+
+  // ---------- SEQUÊNCIAS E ANOMALIAS ----------
+  function analisarSequencias(janela){
+    const runLengths = [3,4];
+    const N = MAX_NUM - MIN_NUM + 1, K = DRAW_SIZE;
+    const results = [];
+    runLengths.forEach(L=>{
+      const expectedProb = nCk(N-L, K-L) / nCk(N,K);
+      for(let start=MIN_NUM; start<=MAX_NUM-L+1; start++){
+        const run = [];
+        for(let i=0;i<L;i++) run.push(start+i);
+        const count = janela.filter(draw => run.every(n=>draw.includes(n))).length;
+        if(count>0){
+          results.push({run, length:L, count, expected: janela.length*expectedProb});
+        }
+      }
+    });
+    results.sort((a,b)=> b.count - a.count || (b.count/(b.expected||0.001)) - (a.count/(a.expected||0.001)));
+    return results.slice(0,12);
+  }
+
+  function renderAnomalias(janela){
+    const list = document.getElementById('anomaliasList');
+    list.innerHTML = '';
+    if(!janela.length) return;
+    const seqs = analisarSequencias(janela);
+    if(!seqs.length){
+      list.innerHTML = '<div class="pair-chip">Nenhuma sequência de 3+ números consecutivos encontrada na janela atual.</div>';
+      return;
+    }
+    seqs.forEach(s=>{
+      const isAnomaly = s.count >= 2 && s.count > s.expected*1.5;
+      const chip = document.createElement('div');
+      chip.className = 'pair-chip';
+      if(isAnomaly) chip.style.borderColor = 'var(--rose)';
+      chip.innerHTML = `${s.run.map(pad).join('-')} <b>${s.count}x</b> <span style="opacity:.6">(esperado ~${s.expected.toFixed(1)}x)</span>${isAnomaly ? ' <span style="color:var(--rose)">⚠</span>' : ''}`;
+      list.appendChild(chip);
+    });
+  }
+
+
+  let apostaCasaAtual = [];
+
+  function gerarApostaDaCasa(){
+    const janela = getAnalysisWindow();
+    const freq = computeFreq(janela);
+    const nums = [];
+    for(let n=MIN_NUM;n<=MAX_NUM;n++) nums.push(n);
+    let pool = nums.slice();
+    let weights = pool.map(n => freq[n] + 1);
+    const picked = [];
+    for(let i=0;i<CARD_SIZE;i++){
+      const total = weights.reduce((a,b)=>a+b,0);
+      let r = Math.random()*total;
+      let idx = 0;
+      for(;idx<weights.length;idx++){
+        r -= weights[idx];
+        if(r<=0) break;
+      }
+      if(idx>=weights.length) idx = weights.length-1;
+      picked.push(pool[idx]);
+      pool.splice(idx,1);
+      weights.splice(idx,1);
+    }
+    picked.sort((a,b)=>a-b);
+    return {picked, janelaSize: janela.length};
+  }
+
+  document.getElementById('btnApostaCasa').addEventListener('click', ()=>{
+    if(!state.historico.length){
+      alert('Adicione o histórico na aba 1 antes de gerar a aposta da casa.');
+      return;
+    }
+    const {picked, janelaSize} = gerarApostaDaCasa();
+    apostaCasaAtual = picked;
+    const board = document.getElementById('apostaCasaBoard');
+    board.innerHTML = '';
+    for(let n=MIN_NUM;n<=MAX_NUM;n++){
+      const div = document.createElement('div');
+      div.className = 'ball';
+      div.textContent = pad(n);
+      if(picked.includes(n)) div.classList.add('fixed');
+      board.appendChild(div);
+    }
+    document.getElementById('apostaCasaInfo').innerHTML =
+      `<span class="status">Sugestão baseada nos últimos ${janelaSize} sorteio(s): ${picked.map(pad).join(', ')}</span>`;
+    document.getElementById('btnCopiarApostaCasa').disabled = false;
+  });
+
+  document.getElementById('btnCopiarApostaCasa').addEventListener('click', ()=>{
+    const text = apostaCasaAtual.map(pad).join(' ');
+    navigator.clipboard.writeText(text).then(()=>{
+      alert('Aposta da casa copiada.');
+    }).catch(()=>{
+      alert('Não foi possível copiar automaticamente: '+text);
+    });
+  });
+
+  const HEAT_STOPS = [
+    {p:0.00, c:[34,197,94]},
+    {p:0.34, c:[250,204,21]},
+    {p:0.67, c:[249,115,22]},
+    {p:1.00, c:[239,68,68]},
+  ];
+  function heatColor(ratio){
+    ratio = Math.max(0, Math.min(1, ratio));
+    let lo = HEAT_STOPS[0], hi = HEAT_STOPS[HEAT_STOPS.length-1];
+    for(let i=0;i<HEAT_STOPS.length-1;i++){
+      if(ratio >= HEAT_STOPS[i].p && ratio <= HEAT_STOPS[i+1].p){
+        lo = HEAT_STOPS[i]; hi = HEAT_STOPS[i+1]; break;
+      }
+    }
+    const span = (hi.p - lo.p) || 1;
+    const t = (ratio - lo.p) / span;
+    const r = Math.round(lo.c[0] + (hi.c[0]-lo.c[0])*t);
+    const g = Math.round(lo.c[1] + (hi.c[1]-lo.c[1])*t);
+    const b = Math.round(lo.c[2] + (hi.c[2]-lo.c[2])*t);
+    return `rgb(${r},${g},${b})`;
+  }
+  function textColorFor(rgbStr){
+    const [r,g,b] = rgbStr.match(/\d+/g).map(Number);
+    const luminance = 0.299*r + 0.587*g + 0.114*b;
+    return luminance > 150 ? '#07240F' : '#EAFBF0';
+  }
+
+  // ---------- FECHAMENTO: PICK BOARD ----------
+  function renderPickBoard(){
+    const board = document.getElementById('pickBoard');
+    board.innerHTML = '';
+    for(let n=MIN_NUM;n<=MAX_NUM;n++){
+      const div = document.createElement('div');
+      div.className = 'ball';
+      div.textContent = pad(n);
+      div.dataset.n = n;
+      if(state.fixed.has(n)) div.classList.add('fixed');
+      if(state.excluded.has(n)) div.classList.add('excluded');
+      div.addEventListener('click', ()=>togglePick(n));
+      board.appendChild(div);
+    }
+    updatePoolInfo();
+  }
+
+  function togglePick(n){
+    if(state.fixed.has(n)){
+      state.fixed.delete(n);
+      if(state.excluded.size < MAX_EXCLUDED) state.excluded.add(n);
+    } else if(state.excluded.has(n)){
+      state.excluded.delete(n);
+    } else {
+      if(state.fixed.size >= MAX_FIXED){
+        alert('Você já escolheu '+MAX_FIXED+' números de certeza. Remova um antes de adicionar outro (clique nele novamente para passar para exclusão).');
+        return;
+      }
+      state.fixed.add(n);
+    }
+    renderPickBoard();
+  }
+
+  function updatePoolInfo(){
+    const pool = [];
+    for(let n=MIN_NUM;n<=MAX_NUM;n++) if(!state.fixed.has(n) && !state.excluded.has(n)) pool.push(n);
+    const info = document.getElementById('poolInfo');
+    const slotsNeeded = CARD_SIZE - state.fixed.size;
+    info.innerHTML = `
+      <div class="pill">Certezas: <b>${state.fixed.size}/${MAX_FIXED}</b></div>
+      <div class="pill">Exclusões: <b>${state.excluded.size}/${MAX_EXCLUDED}</b></div>
+      <div class="pill">Miolo disponível: <b>${pool.length}</b> números</div>
+      <div class="pill">Cada jogo terá: <b>${Math.min(CARD_SIZE, state.fixed.size + pool.length)}</b> números (fixo: ${CARD_SIZE})</div>
+      <div class="pill">Faltam completar: <b>${slotsNeeded}</b> por jogo</div>
+    `;
+    return pool;
+  }
+
+  document.getElementById('btnResetFechamento').addEventListener('click', ()=>{
+    state.fixed.clear();
+    state.excluded.clear();
+    state.jogos = [];
+    renderPickBoard();
+    document.getElementById('cardResultado').style.display = 'none';
+    const statusEl = document.getElementById('statusFechamento');
+    statusEl.textContent = '';
+    statusEl.classList.remove('warn');
+    document.getElementById('btnCopiar').disabled = true;
+    document.getElementById('btnCsv').disabled = true;
+    document.getElementById('valorJogo').value = '';
+    document.getElementById('numJogos').value = 20;
+    document.getElementById('numJogosLabel').textContent = '20';
+    document.getElementById('modoFechamento').value = 'cobertura';
+    document.getElementById('controleCobertura').style.display = 'block';
+  });
+
+  // ---------- FECHAMENTO: GERAÇÃO ----------
+  const modoSelect = document.getElementById('modoFechamento');
+  const numJogosInput = document.getElementById('numJogos');
+  const numJogosLabel = document.getElementById('numJogosLabel');
+  numJogosInput.addEventListener('input', ()=> numJogosLabel.textContent = numJogosInput.value);
+  modoSelect.addEventListener('change', ()=>{
+    document.getElementById('controleCobertura').style.display = modoSelect.value==='cobertura' ? 'block':'none';
+  });
+
+  function nCk(n,k){
+    if(k<0||k>n) return 0;
+    k = Math.min(k, n-k);
+    let r = 1;
+    for(let i=0;i<k;i++) r = r*(n-i)/(i+1);
+    return Math.round(r);
+  }
+
+  function combinations(arr, k){
+    const results = [];
+    function helper(start, combo){
+      if(combo.length===k){ results.push(combo.slice()); return; }
+      for(let i=start;i<arr.length;i++){
+        combo.push(arr[i]);
+        helper(i+1, combo);
+        combo.pop();
+      }
+    }
+    helper(0, []);
+    return results;
+  }
+
+  function gerarCobertura(fixedArr, poolArr, slots, numJogos){
+    const pairKey = (a,b) => a<b ? a+','+b : b+','+a;
+    const uncovered = new Set();
+    const uncoveredDegree = new Map();
+    poolArr.forEach(n => uncoveredDegree.set(n, 0));
+    let totalPairs = 0;
+    for(let i=0;i<poolArr.length;i++){
+      for(let j=i+1;j<poolArr.length;j++){
+        const a=poolArr[i], b=poolArr[j];
+        uncovered.add(pairKey(a,b));
+        uncoveredDegree.set(a, uncoveredDegree.get(a)+1);
+        uncoveredDegree.set(b, uncoveredDegree.get(b)+1);
+        totalPairs++;
+      }
+    }
+
+    function coverPair(a,b){
+      const key = pairKey(a,b);
+      if(uncovered.has(key)){
+        uncovered.delete(key);
+        uncoveredDegree.set(a, uncoveredDegree.get(a)-1);
+        uncoveredDegree.set(b, uncoveredDegree.get(b)-1);
+      }
+    }
+
+    const jogos = [];
+    const seen = new Set();
+    let attempts = 0;
+    const maxAttempts = numJogos * 15 + 40;
+
+    while(jogos.length < numJogos && attempts < maxAttempts){
+      attempts++;
+      let remaining = poolArr.slice();
+      let selected = [];
+      while(selected.length < slots && remaining.length > 0){
+        let bestScore = -1, bestIdxs = [];
+        remaining.forEach((c, idx)=>{
+          let score;
+          if(selected.length === 0){
+            score = uncoveredDegree.get(c);
+          } else {
+            score = 0;
+            selected.forEach(s=>{
+              score += uncovered.has(pairKey(c,s)) ? 3 : 1;
+            });
+          }
+          if(score > bestScore){ bestScore = score; bestIdxs = [idx]; }
+          else if(score === bestScore) bestIdxs.push(idx);
+        });
+        const pick = bestIdxs[Math.floor(Math.random()*bestIdxs.length)];
+        selected.push(remaining[pick]);
+        remaining.splice(pick,1);
+      }
+      const jogo = fixedArr.concat(selected).sort((a,b)=>a-b);
+      const sig = jogo.join('-');
+      if(seen.has(sig)) continue;
+      seen.add(sig);
+      jogos.push(jogo);
+      for(let i=0;i<selected.length;i++)
+        for(let j=i+1;j<selected.length;j++)
+          coverPair(selected[i], selected[j]);
+    }
+    const coverage = totalPairs ? 1 - uncovered.size/totalPairs : 1;
+    return {jogos, coverage, totalPairs, uncoveredCount: uncovered.size};
+  }
+
+  document.getElementById('btnGerar').addEventListener('click', ()=>{
+    const pool = [];
+    for(let n=MIN_NUM;n<=MAX_NUM;n++) if(!state.fixed.has(n) && !state.excluded.has(n)) pool.push(n);
+    const fixedArr = [...state.fixed].sort((a,b)=>a-b);
+    const slots = CARD_SIZE - fixedArr.length;
+    const statusEl = document.getElementById('statusFechamento');
+
+    if(pool.length < slots){
+      statusEl.textContent = 'Miolo insuficiente para completar '+CARD_SIZE+' números. Escolha menos exclusões.';
+      statusEl.classList.add('warn');
+      return;
+    }
+
+    let jogos, coverage=null, totalPairs=null;
+
+    if(modoSelect.value === 'fechado'){
+      const total = nCk(pool.length, slots);
+      if(total > 3000){
+        statusEl.textContent = `Fechamento fechado geraria ${total.toLocaleString('pt-BR')} jogos — inviável. Reduza o miolo (adicione mais certezas/exclusões) ou use o modo cobertura.`;
+        statusEl.classList.add('warn');
+        return;
+      }
+      const combos = combinations(pool, slots);
+      jogos = combos.map(c => fixedArr.concat(c).sort((a,b)=>a-b));
+      coverage = 1;
+      totalPairs = pool.length*(pool.length-1)/2;
+    } else {
+      const numJogos = parseInt(numJogosInput.value, 10);
+      const res = gerarCobertura(fixedArr, pool, slots, numJogos);
+      jogos = res.jogos;
+      coverage = res.coverage;
+      totalPairs = res.totalPairs;
+    }
+
+    state.jogos = jogos;
+    statusEl.classList.remove('warn');
+    statusEl.textContent = `${jogos.length} jogo(s) gerado(s) com sucesso.`;
+    renderResultado(jogos, coverage, totalPairs);
+    document.getElementById('btnCopiar').disabled = false;
+    document.getElementById('btnCsv').disabled = false;
+  });
+
+  function renderResultado(jogos, coverage, totalPairs){
+    document.getElementById('cardResultado').style.display = 'block';
+    const valor = parseFloat(document.getElementById('valorJogo').value) || 0;
+    const custo = (valor * jogos.length).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+    const resumo = document.getElementById('resumoFechamento');
+    resumo.innerHTML = '';
+    const boxes = [
+      ['Total de jogos', jogos.length],
+      ['Cobertura do miolo', totalPairs ? (coverage*100).toFixed(1)+'%' : '—'],
+      ['Custo estimado', valor ? custo : '—'],
+    ];
+    boxes.forEach(([label,value])=>{
+      const box = document.createElement('div');
+      box.className = 'stat-box';
+      box.innerHTML = `<div class="label">${label}</div><div class="value">${value}</div>`;
+      resumo.appendChild(box);
+    });
+
+    const tbody = document.getElementById('tbodyJogos');
+    tbody.innerHTML = '';
+    jogos.forEach((jogo, i)=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${i+1}</td><td class="nums">${jogo.map(pad).join('  ')}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('btnCopiar').addEventListener('click', ()=>{
+    const text = state.jogos.map((j,i)=> (i+1)+': '+j.map(pad).join(' ')).join('\n');
+    navigator.clipboard.writeText(text).then(()=>{
+      alert('Jogos copiados para a área de transferência.');
+    }).catch(()=>{
+      alert('Não foi possível copiar automaticamente. Selecione o texto manualmente na tabela.');
+    });
+  });
+
+  document.getElementById('btnCsv').addEventListener('click', ()=>{
+    let csv = 'jogo,numeros\n';
+    state.jogos.forEach((j,i)=>{ csv += (i+1)+','+j.map(pad).join(' ')+'\n'; });
+    const blob = new Blob([csv], {type:'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'fechamento_megasena.csv';
+    a.click();
+  });
+
+  // ---------- INIT ----------
+  renderPickBoard();
+  renderStats();
+})();
+</script>
+</body>
+</html>

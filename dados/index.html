@@ -109,7 +109,7 @@
   <a class="back" href="../">← Voltar</a>
   <header>
     <h1>Dados <span class="accent">atualizados</span></h1>
-    <p class="subtitle">Últimos 1000 concursos de Lotofácil e Lotomania, atualizados automaticamente todo dia. Copie e cole no grupo do Telegram/WhatsApp ou na aba "Histórico" das ferramentas de fechamento.</p>
+    <p class="subtitle">Últimos 1000 concursos de Lotofácil, Lotomania, Mega-Sena e Quina, atualizados automaticamente todo dia. Copie e cole no grupo do Telegram/WhatsApp ou na aba "Histórico" das ferramentas de fechamento.</p>
   </header>
 
   <div class="card">
@@ -138,11 +138,37 @@
     <div class="status" id="status-lotomania"></div>
   </div>
 
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><span class="dot" style="--card-accent:#3DDC84;"></span>Mega-Sena</div>
+      <div class="meta" id="meta-megasena">carregando…</div>
+    </div>
+    <textarea id="txt-megasena" readonly placeholder="Carregando resultados…"></textarea>
+    <div class="actions">
+      <button style="--card-accent:#3DDC84;" onclick="copiar('megasena')">Copiar texto</button>
+      <button class="secondary" onclick="baixar('megasena')">Baixar .txt</button>
+    </div>
+    <div class="status" id="status-megasena"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><span class="dot" style="--card-accent:#C158D6;"></span>Quina</div>
+      <div class="meta" id="meta-quina">carregando…</div>
+    </div>
+    <textarea id="txt-quina" readonly placeholder="Carregando resultados…"></textarea>
+    <div class="actions">
+      <button style="--card-accent:#C158D6;" onclick="copiar('quina')">Copiar texto</button>
+      <button class="secondary" onclick="baixar('quina')">Baixar .txt</button>
+    </div>
+    <div class="status" id="status-quina"></div>
+  </div>
+
   <div class="disclaimer">Os arquivos acima são gerados automaticamente por uma rotina diária que busca os resultados oficiais na API da Caixa. Formato de cada linha: <code>concurso: dezenas</code> — o mesmo aceito na aba "Histórico" das ferramentas de fechamento.</div>
 </div>
 
 <script>
-  const JOGOS = ['lotofacil', 'lotomania'];
+  const JOGOS = ['lotofacil', 'lotomania', 'megasena', 'quina'];
 
   function formatarData(iso){
     if(!iso) return '';
