@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fechamento Lotéricas — Lucho Pahim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #120E1E;
+    --bg-elev: #1A1530;
+    --border: #322952;
+    --text: #F2EEFB;
+    --text-muted: #A79BC7;
+    --violet: #A78BFA;
+    --gold: #F5B942;
+    --teal: #4FD3C4;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 20% 0%, #241c3f 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height:100vh;
+    padding: 48px 20px 60px;
+  }
+  .wrap{max-width: 880px; margin: 0 auto;}
+  header{text-align:center; margin-bottom: 44px;}
+  h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  h1 .accent{color: var(--violet);}
+  .subtitle{color: var(--text-muted); font-size: 15px; max-width: 520px; margin: 0 auto; line-height:1.6;}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+  a.card{
+    display:block;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 22px;
+    text-decoration:none;
+    color: var(--text);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  a.card:hover{
+    transform: translateY(-3px);
+    border-color: var(--card-accent, var(--violet));
+  }
+  .card-icon{
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fredoka', sans-serif; font-weight:700; font-size:18px;
+    margin-bottom: 16px;
+    background: color-mix(in srgb, var(--card-accent, var(--violet)) 18%, transparent);
+    color: var(--card-accent, var(--violet));
+  }
+  .card-title{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .card-desc{
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height:1.5;
+  }
+  .card-cta{
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight:600;
+    color: var(--card-accent, var(--violet));
+  }
+
+  .disclaimer{
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--violet);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height:1.6;
+  }
+
+  footer{margin-top: 40px; text-align:center; font-size:12px; color: var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Fechamento <span class="accent">Lotéricas</span></h1>
+    <p class="subtitle">Ferramentas de análise de padrões e fechamento de jogos para Lotofácil e Lotomania — com metodologia aberta e sem promessa de resultado garantido.</p>
+  </header>
+
+  <div class="grid">
+    <a class="card" href="./lotofacil/" style="--card-accent:#F5B942;">
+      <div class="card-icon">15</div>
+      <div class="card-title">Fechamento Lotofácil</div>
+      <div class="card-desc">Histórico, tabuleiro de frequência, sequências, aposta da casa e fechamento por cobertura otimizada.</div>
+      <div class="card-cta">Abrir ferramenta →</div>
+    </a>
+
+    <a class="card" href="./lotomania/" style="--card-accent:#4FD3C4;">
+      <div class="card-icon">50</div>
+      <div class="card-title">Fechamento Lotomania</div>
+      <div class="card-desc">Mesma análise adaptada para os 100 números e 50 dezenas por jogo da Lotomania.</div>
+      <div class="card-cta">Abrir ferramenta →</div>
+    </a>
+
+    <a class="card" href="./metodologia/" style="--card-accent:#A78BFA;">
+      <div class="card-icon">?</div>
+      <div class="card-title">Metodologia</div>
+      <div class="card-desc">Como a análise de padrões, o algoritmo de cobertura e a aposta da casa funcionam por baixo do capô.</div>
+      <div class="card-cta">Ler explicação →</div>
+    </a>
+  </div>
+
+  <div class="disclaimer">Os sorteios de loteria são aleatórios e independentes — nenhuma das ferramentas aqui prevê resultados. Elas organizam histórico, leitura de padrões e cobertura de jogos. Consulte a página de Metodologia para entender exatamente o que cada análise faz e o que ela não faz.</div>
+
+  <footer>Ferramenta pessoal de organização de jogos — não afiliada à Caixa Econômica Federal.</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodologia — Fechamento Lotéricas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #120E1E;
+    --bg-elev: #1A1530;
+    --border: #322952;
+    --text: #F2EEFB;
+    --text-muted: #A79BC7;
+    --violet: #A78BFA;
+    --gold: #F5B942;
+    --teal: #4FD3C4;
+    --rose: #EF5C79;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 20% 0%, #241c3f 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height:100vh;
+    padding: 40px 20px 70px;
+    line-height:1.65;
+  }
+  .wrap{max-width: 760px; margin: 0 auto;}
+  a.back{
+    display:inline-block; color: var(--text-muted); text-decoration:none;
+    font-size: 13.5px; margin-bottom: 22px;
+  }
+  a.back:hover{color: var(--violet);}
+
+  h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size: clamp(26px, 4.5vw, 34px);
+    margin: 0 0 10px;
+  }
+  h1 .accent{color: var(--violet);}
+  .subtitle{color: var(--text-muted); font-size: 14.5px; margin: 0 0 28px;}
+
+  .card{
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+  }
+  .card.disclaimer{border-left: 3px solid var(--rose); font-size: 14px; color: var(--text-muted);}
+
+  h2{
+    font-family:'Fredoka', sans-serif;
+    font-size: 19px;
+    font-weight:600;
+    margin: 0 0 12px;
+    display:flex; align-items:center; gap:10px;
+  }
+  h2 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; border-radius:50%;
+    background: var(--violet); color:#1a0f33;
+    font-size:12px; font-weight:700; flex-shrink:0;
+  }
+  p{margin: 0 0 14px; color: var(--text); font-size: 15px;}
+  p:last-child{margin-bottom:0;}
+  strong{color: var(--text);}
+
+  table{width:100%; border-collapse:collapse; margin: 6px 0 4px; font-size: 14px;}
+  th, td{padding: 9px 12px; border-bottom: 1px solid var(--border); text-align:left;}
+  th{color: var(--text-muted); font-weight:600; font-size:12.5px; text-transform:uppercase; letter-spacing:.03em;}
+
+  ol, ul{margin: 0 0 14px; padding-left: 22px; color: var(--text); font-size: 15px;}
+  li{margin-bottom: 8px;}
+
+  code{
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--teal);
+  }
+
+  .final-box{
+    border-left: 3px solid var(--gold);
+  }
+
+  footer{margin-top: 34px; text-align:center; font-size:12px; color: var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← voltar para a página inicial</a>
+
+  <h1>Metodologia das ferramentas de <span class="accent">Fechamento</span></h1>
+  <p class="subtitle">Como a análise de padrões, o algoritmo de cobertura e a aposta da casa funcionam, no Fechamento Lotofácil e no Fechamento Lotomania.</p>
+
+  <div class="card">
+    <h2>O que a ferramenta faz</h2>
+    <p>As duas ferramentas — uma para Lotofácil, outra para Lotomania — organizam três coisas: o histórico de sorteios que você já jogou, a leitura de padrões estatísticos desse histórico, e o fechamento de múltiplos jogos a partir de números que você escolhe. Elas não preveem resultados. O que fazem é dar estrutura e cobertura à sua estratégia, com base em métodos estatísticos e de combinatória.</p>
+  </div>
+
+  <div class="card disclaimer">
+    <strong>Antes de continuar:</strong> sorteios de loteria são eventos aleatórios e independentes. O resultado de um concurso não é influenciado pelo concurso anterior, e nenhum padrão histórico — por mais consistente que pareça — muda a probabilidade do próximo sorteio. A metodologia abaixo organiza informação e otimiza cobertura de apostas; ela não cria uma vantagem estatística sobre a casa.
+  </div>
+
+  <div class="card">
+    <h2><span class="num">1</span> Janela de análise (profundidade)</h2>
+    <p>Todo o histórico que você cola na ferramenta fica guardado, mas a análise não precisa usar tudo de uma vez. Você escolhe uma <strong>janela</strong> — últimos 10, 20, 50, 100, 200, 500 sorteios ou o histórico completo — e todas as estatísticas seguintes (tabuleiro de frequência, pares, sequências, números quentes, aposta da casa) são recalculadas só com os sorteios dentro dessa janela.</p>
+    <p>Isso existe porque frequência acumulada ao longo de anos e frequência recente contam histórias diferentes. Uma janela curta mostra o que tem saído "agora"; uma janela longa suaviza esse ruído e se aproxima da frequência teórica de cada número — fenômeno conhecido como <strong>lei dos grandes números</strong>. Nenhuma das duas é "mais certa"; são recortes diferentes do mesmo dado.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">2</span> Tabuleiro de frequência (quadrantes)</h2>
+    <p>Cada número do jogo (1 a 25 na Lotofácil, 00 a 99 na Lotomania) é contado dentro da janela selecionada. A contagem é normalizada em relação ao número mais frequente (0 a 1) e mapeada num gradiente de quatro cores — verde (frio) → amarelo → laranja → vermelho (quente) — para leitura visual rápida.</p>
+    <p>Esse tabuleiro é puramente descritivo: mostra o que já aconteceu, não o que vai acontecer. Serve para embasar decisões subjetivas de quais números fixar ou excluir na etapa de fechamento, não como previsão.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">3</span> Pares mais frequentes</h2>
+    <p>Além da frequência individual, a ferramenta conta quantas vezes cada par de números saiu junto no mesmo sorteio, dentro da mesma janela. Útil para quem quer montar jogos considerando combinações que historicamente colaram juntas — de novo, leitura descritiva do passado, sem implicação causal sobre o futuro.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">4</span> Sequências e anomalias</h2>
+    <p>A ferramenta também procura sequências de <strong>3 ou 4 números consecutivos</strong> (por exemplo, 14-15-16-17) que apareceram juntas no mesmo sorteio dentro da janela. Para cada sequência encontrada, ela calcula quantas vezes isso realmente aconteceu e compara com o quanto seria <strong>esperado por puro acaso</strong>, usando a combinatória exata do jogo (quantas dezenas são sorteadas, de quantas possíveis).</p>
+    <p>Quando o observado ultrapassa 1,5x o esperado, a sequência é destacada como uma possível anomalia. Isso não significa que ela vá se repetir — é só um sinal de que, dentro da janela escolhida, aquele padrão saiu mais do que o acaso sozinho explicaria.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">5</span> Certezas, exclusões e o "miolo"</h2>
+    <p>Na aba de fechamento, você marca até um número máximo de dezenas como <strong>certeza</strong> (entram fixas em todos os jogos gerados) e até um máximo como <strong>exclusão</strong> (não entram em nenhum jogo). O restante forma o <strong>miolo</strong> — o conjunto do qual a ferramenta sorteia as posições que faltam para completar cada aposta.</p>
+    <table>
+      <thead><tr><th></th><th>Lotofácil</th><th>Lotomania</th></tr></thead>
+      <tbody>
+        <tr><td>Universo de números</td><td>1 a 25</td><td>00 a 99</td></tr>
+        <tr><td>Números por aposta</td><td>15</td><td>50</td></tr>
+        <tr><td>Certezas / exclusões (máx.)</td><td>5 / 5</td><td>10 / 10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">6</span> Fechamento por cobertura otimizada</h2>
+    <p>Esse é o núcleo combinatório da ferramenta. O objetivo de um fechamento é: dado um miolo de N números, gerar um conjunto de jogos que cubra o máximo possível de combinações diferentes desse miolo, usando o menor número de jogos possível — porque cada jogo custa dinheiro.</p>
+    <p>Cobrir <strong>todas</strong> as combinações possíveis (o fechamento fechado) cresce rápido demais para ser viável — escolher 10 números dentre um miolo de 15 já gera 3.003 combinações diferentes. Por isso, acima de 3.000 combinações a ferramenta bloqueia o modo fechado e recomenda o modo de cobertura.</p>
+    <p>No modo de <strong>cobertura otimizada</strong>, a ferramenta usa um algoritmo guloso (<em>greedy</em>) de cobertura de pares:</p>
+    <ol>
+      <li>Lista todos os pares possíveis de números dentro do miolo.</li>
+      <li>Para cada novo jogo, escolhe os números que, somados aos já selecionados naquele jogo, cobrem o maior número de pares ainda não cobertos por nenhum jogo anterior.</li>
+      <li>Repete até atingir a quantidade de jogos definida, sempre evitando jogos duplicados.</li>
+      <li>Ao final, calcula a <strong>porcentagem de cobertura</strong>: quantos dos pares possíveis do miolo apareceram em pelo menos um jogo gerado.</li>
+    </ol>
+    <p>Esse método não garante matematicamente um número mínimo de acertos como um fechamento fechado profissional garantiria — é uma heurística prática, mas consegue aproximar coberturas muito altas (frequentemente 100% dos pares) com uma fração pequena do número de jogos que um fechamento fechado exigiria.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">7</span> Aposta da casa (Surpresinha ponderada)</h2>
+    <p>Gera um único jogo completo automaticamente, sem exigir certezas ou exclusões. A lógica é uma <strong>amostragem aleatória ponderada, sem reposição</strong>:</p>
+    <ol>
+      <li>Calcula a frequência de cada número dentro da janela de análise selecionada.</li>
+      <li>Atribui a cada número um peso igual à sua frequência mais 1 — a soma de +1 garante que até números "frios" mantenham alguma chance, preservando o caráter de sorteio real.</li>
+      <li>Sorteia os números um a um, sem repetir, com probabilidade proporcional ao peso de cada um no momento do sorteio.</li>
+    </ol>
+    <p>O resultado favorece levemente os números mais quentes da janela, mas continua sendo, no fundo, um sorteio — não uma seleção determinística. Cada clique gera uma sugestão diferente.</p>
+  </div>
+
+  <div class="card final-box">
+    <h2>O que essa metodologia não é</h2>
+    <ul>
+      <li><strong>Não é previsão.</strong> Nenhuma parte do sistema estima a probabilidade real do próximo sorteio a partir do histórico — loterias regulamentadas usam sorteio mecânico ou equivalente, com cada combinação tendo a mesma probabilidade a cada concurso, independente do passado.</li>
+      <li><strong>Não é garantia de retorno financeiro.</strong> Cobertura de combinações aumenta a chance de acerto parcial dentro do miolo escolhido, mas não muda o valor esperado do jogo, definido pela estrutura de premiação da loteria.</li>
+      <li><strong>É uma ferramenta de organização e gestão de aposta.</strong> Ajuda a estruturar quantos jogos fazer, quais números considerar e como distribuir a cobertura entre eles.</li>
+    </ul>
+  </div>
+
+  <footer>Ferramenta pessoal de organização de jogos — não afiliada à Caixa Econômica Federal.</footer>
+</div>
+</body>
+</html>
