@@ -1,10 +1,10 @@
 {
-  "geradoEm": "2026-08-19T03:26:13.627Z",
+  "geradoEm": "2026-08-20T03:25:41.738Z",
   "jogos": {
     "lotofacil": {
-      "ultimoConcurso": 3764,
-      "data": "17/08/2026",
-      "totalSalvo": 1011
+      "ultimoConcurso": 3765,
+      "data": "18/08/2026",
+      "totalSalvo": 1012
     },
     "lotomania": {
       "ultimoConcurso": 2964,
@@ -12,14 +12,14 @@
       "totalSalvo": 1006
     },
     "megasena": {
-      "ultimoConcurso": 3045,
-      "data": "16/08/2026",
-      "totalSalvo": 1005
+      "ultimoConcurso": 3046,
+      "data": "18/08/2026",
+      "totalSalvo": 1006
     },
     "quina": {
-      "ultimoConcurso": 7094,
-      "data": "17/08/2026",
-      "totalSalvo": 1011
+      "ultimoConcurso": 7095,
+      "data": "18/08/2026",
+      "totalSalvo": 1012
     }
   }
 }
