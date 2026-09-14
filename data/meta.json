@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-09-13T07:37:26.537Z",
+  "geradoEm": "2026-09-14T08:04:26.548Z",
   "jogos": {
     "lotofacil": {
       "ultimoConcurso": 3779,
@@ -12,14 +12,14 @@
       "totalSalvo": 1016
     },
     "megasena": {
-      "ultimoConcurso": 3056,
-      "data": "10/09/2026",
-      "totalSalvo": 1016
+      "ultimoConcurso": 3057,
+      "data": "13/09/2026",
+      "totalSalvo": 1017
     },
     "quina": {
-      "ultimoConcurso": 7115,
-      "data": "11/09/2026",
-      "totalSalvo": 1032
+      "ultimoConcurso": 7116,
+      "data": "13/09/2026",
+      "totalSalvo": 1033
     }
   }
 }
