@@ -1,25 +1,25 @@
 {
-  "geradoEm": "2026-10-01T09:20:03.827Z",
+  "geradoEm": "2026-10-03T08:30:14.525Z",
   "jogos": {
     "lotofacil": {
-      "ultimoConcurso": 3793,
-      "data": "30/09/2026",
-      "totalSalvo": 1040
+      "ultimoConcurso": 3795,
+      "data": "02/10/2026",
+      "totalSalvo": 1042
     },
     "lotomania": {
-      "ultimoConcurso": 2982,
-      "data": "30/09/2026",
-      "totalSalvo": 1024
+      "ultimoConcurso": 2983,
+      "data": "02/10/2026",
+      "totalSalvo": 1025
     },
     "megasena": {
-      "ultimoConcurso": 3064,
-      "data": "29/09/2026",
-      "totalSalvo": 1024
+      "ultimoConcurso": 3065,
+      "data": "01/10/2026",
+      "totalSalvo": 1025
     },
     "quina": {
-      "ultimoConcurso": 7131,
-      "data": "30/09/2026",
-      "totalSalvo": 1048
+      "ultimoConcurso": 7133,
+      "data": "02/10/2026",
+      "totalSalvo": 1050
     }
   }
 }
